@@ -9,15 +9,20 @@ const app = (req, res) => {
     const url = req.url
     req.path = url.split('?')[0] // 获取path
     req.query = qs.parse(url.split('?')[1]) // 获取query
-    
+
     // 获取post数据
     getPostData(req).then((postData) => {
         req.body = postData
 
-        const webData = web(req, res) // 执行路由函数
-        console.log('webData', webData)
-        if (webData) {
-            res.end(JSON.stringify(webData))
+        const webDataPromise = web(req, res) // 执行路由函数
+        if (webDataPromise) {
+            if (typeof webDataPromise.then === 'function') {
+                webDataPromise.then((webData) => {
+                    res.end(JSON.stringify(webData))
+                })
+            } else {
+                res.end(JSON.stringify(webDataPromise))
+            }
         } else {
             // 路由未匹配到
             res.writeHead(404, {'Content-Type': 'text/plain'})

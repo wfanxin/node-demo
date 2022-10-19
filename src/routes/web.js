@@ -18,6 +18,10 @@ const web = (req, res) => {
                 return user.getUser(req).then((result) => {
                     return success(result)
                 })
+            case '/api/cookie':
+                // res.setHeader('Set-Cookie', 'name=xeg') // 不支持中文，设置单个
+                res.setHeader('set-Cookie', ['name=xeg; path=/', 'age=18', 'height=175']) // 多个设置单个
+                return success('cookie设置成功')
                 
         }
     } else if (method === 'POST') {

@@ -1,0 +1,7 @@
+@url = http://localhost:5000/api
+
+### user请求
+get {{url}}/user
+
+### menus请求
+get {{url}}/menus
